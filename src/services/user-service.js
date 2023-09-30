@@ -47,7 +47,23 @@ class UserService {
         }
     }
 
+    async isAuthenticated(token) {
+        try {
+            const isTokenVerified = await this.verifyToken(token);
+            if (!isTokenVerified) {
+                throw new Error('Token is invalid');
+            }
+            const user = await this.userRepository.getById(isTokenVerified.id);
+            if (!user) {
+                throw new Error('User not found');
+            }
 
+            return user.id;
+        } catch (error) {
+            console.log("something went wrong: service Layer", error)
+            throw error;
+        }
+    }
     createToken = (user) => {
         try {
 
