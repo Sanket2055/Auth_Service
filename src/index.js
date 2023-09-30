@@ -3,6 +3,7 @@ const express = require("express");
 const apiRoutes = require("./routes/index");
 const { PORT } = require("./config/serverConfig");
 const bodyParser = require("body-parser");
+const UserService = require("./services/user-service");
 
 const app = express();
 const prepareAndStartServer = async () => {
