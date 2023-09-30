@@ -19,6 +19,35 @@ class UserService {
         }
     }
 
+    async signIn(email, plainPassword) {
+        try {
+
+            // fetch the user using email
+            const user = await this.userRepository.getUserByEmail(email);
+            // check if user exists
+            if (!user) {
+                console.log('User not found');
+                throw new Error('User not found');
+            }
+            // check if password is correct
+            const isPasswordCorrect = this.checkPassword(plainPassword, user.password);
+            if (!isPasswordCorrect) {
+                console.log('Password is incorrect');
+                throw new Error('Password is incorrect');
+            }
+            // create token
+            const token = this.createToken({ email: user.email, id: user.id });
+            // return token
+            return token;
+
+
+        } catch (error) {
+            console.log("something went wrong: service Layer", error)
+            throw error;
+        }
+    }
+
+
     createToken = (user) => {
         try {
 
@@ -51,6 +80,8 @@ class UserService {
             throw error;
         }
     }
+
+
 }
 
 module.exports = UserService;
