@@ -1,6 +1,7 @@
 const UserRepository = require('../repository/user-reposirtory');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../config/serverConfig');
+const bcrypt = require('bcrypt');
 class UserService {
     constructor() {
         this.userRepository = new UserRepository();
@@ -38,6 +39,16 @@ class UserService {
             console.log("something went wrong: service Layer", error)
             throw error;
 
+        }
+    }
+
+    checkPassword = (password, hash) => {
+        try {
+            const response = bcrypt.compareSync(password, hash);
+            return response;
+        } catch (error) {
+            console.log("something went wrong: service Layer", error)
+            throw error;
         }
     }
 }
