@@ -27,11 +27,7 @@ class UserService {
 
             // fetch the user using email
             const user = await this.userRepository.getUserByEmail(email);
-            // check if user exists
-            if (!user) {
-                console.log('User not found');
-                throw new Error('User not found');
-            }
+
             // check if password is correct
             const isPasswordCorrect = this.checkPassword(plainPassword, user.password);
             if (!isPasswordCorrect) {
@@ -45,6 +41,9 @@ class UserService {
 
 
         } catch (error) {
+            if(error.name === "AttributeNotFound"){
+                throw error;
+            }
             console.log("something went wrong: service Layer", error)
             throw error;
         }

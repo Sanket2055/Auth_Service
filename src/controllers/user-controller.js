@@ -33,11 +33,11 @@ const signIn = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
-        res.status(500).json({
-            message: "Something went wrong!",
+        res.status(error.statusCode).json({
+            message: error.message,
             data: {},
             success: false,
-            error: error.message
+            error: error.description
         })
     }
 }
